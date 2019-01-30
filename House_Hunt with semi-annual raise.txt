@@ -1,0 +1,49 @@
+#Function header starts with def, all the values in brackets are to be passed into the function
+def savings_calc(a_salary, saved, house_cost, a_raise, down_payment, r = 0.04, savings = 0):     
+    '''
+    This function returns the number of months required to save for the users
+    dream home.
+    
+    In: a_salary        = Annual Salary (postive float)
+        saved           = portion saved (positive float) - 0.05 means 5% of Annual salary
+        house_cost      = cost of house (positive float)
+        a_raise         = 6 monthly raise (positive float) - 0.04 means 4% raise every 6 months
+        down_payment    = The minimum down payment needed for that house (positive float)
+        r               = Annual savings interest (positive float) - default 0.04 (4% a year)
+        savings         = Current savings in the bank (positive float) - default is 0
+        
+    out:
+        Prints the monthly savings and raises and stops when the payment
+    '''
+    mon_sav = (a_salary / 12) * saved   #I just combined monthly_salary into mon_sav
+    monat, raise_timer = 0, 0           #You can define variables on multiple lines to save space
+    while savings < down_payment:
+        savings = savings + mon_sav + ((savings*r)/12)
+        monat += 1    #This is the same as monat = monat + 1 so a bit of a shortcut
+        
+        #+str(monat) converts numbers to strings, round(savings, 2) to round to 2 decimals. 
+        print("\nMonth: " +str(monat)+ " Current Savings: " +str(round(savings, 2)))
+        
+        raise_timer += 1
+        if raise_timer == 6:            
+            a_salary = a_salary * (1 + a_raise)
+            mon_sav = (a_salary / 12) * saved
+            print("\nCongratulations on the raise!, you now earn: "+str(round(a_salary, 2))+" yearly")
+            raise_timer = 0
+    print("\nSavings goal reached after "+str(monat)+" months!\n")
+
+def dreamhome():
+    print("\nDream Home Calculator\n")
+    while True:
+        a_salary = float(input("What is your annual salary? "))
+        saved = float(input("What portion will you be saving? "))
+        house_cost = float(input("What is the total cost of your home? "))
+        a_raise = float(input("What percent will your raise be? "))
+        down_payment = house_cost * 0.25
+        
+        #This line below calls the function savings_calc and passes the variables above into it
+        savings_calc(a_salary, saved, house_cost, a_raise, down_payment)
+
+        choice = input("\nPlease type (x) to exit, or any other key to continue: ")
+        if choice == 'x':
+            break
